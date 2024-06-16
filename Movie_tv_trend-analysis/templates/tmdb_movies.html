@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Top Trending Movies in TMDB</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='movies_popularity_toxicity.css') }}">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            padding: 20px;
+            background: linear-gradient(to bottom right, #87CEFA, #2f4ced); 
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center; 
+            align-items: flex-start; 
+        }
+
+        h1 {
+            color: #333;
+            text-align: center;
+            width: 100%; 
+        }
+
+        .result-container {
+            background-color: #ffffff9b;
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 100%; 
+        }
+
+        .genre-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            padding: 2%;
+            justify-content: space-around; 
+        }
+
+        .genre-item {
+            border: 1px solid #ddd;
+            padding: 20px;
+            border-radius: 10px;
+            background-color: #fff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: calc(33.33% - 40px); 
+            box-sizing: border-box; 
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .genre-item:hover {
+            transform: scale(1.05);
+        }
+
+        h2 {
+            color: #428bca;
+            margin-bottom: 10px;
+        }
+
+        p {
+            color: #555;
+            margin: 0;
+        }
+        .home-link {
+            position: absolute;
+            top: 10px; 
+            left: 10px; 
+            font-weight: bolder;
+            font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+            color: white; 
+            text-decoration: none; 
+            z-index: 1000; 
+        }
+a:hover {
+    text-decoration: none;
+    color: rgb(198, 191, 191);
+    
+}
+    </style>
+</head>
+<body>
+    <h1>Top Trending Movies Across the decade</h1>
+    <div class="result-container">
+        <div class="col">
+            <a href="/" class="home-link">DDJJR.</a>
+        </div>
+
+        <div class="genre-list">
+            {% for entry in movies %}
+                <div class="genre-item">
+                    <h2>{{ entry['title'] }}</h2>
+                    <p>Popularity: {{ entry['popularity'] }}</p>
+                    <p>Genre: {{ entry['genres'] }}</p>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</body>
+</html>

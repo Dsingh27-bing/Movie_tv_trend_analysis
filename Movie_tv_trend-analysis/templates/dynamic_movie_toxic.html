@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Toxic TV Show Data Visualization</title>
+    <!-- Include Bootstrap for responsive layout -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=PT+Serif:ital,wght@1,700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Didact+Gothic&family=Roboto+Condensed:ital,wght@1,200&display=swap');
+
+        body {
+            font-family: 'Times New Roman', serif;
+            overflow-x: hidden;
+            overflow-y: hidden;
+            margin: 0;
+            padding: 0;
+            background-color: #f8f9fa; 
+        }
+        #plotContainer {
+            background-color: #87120c; 
+            color: white;
+            padding: 10px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            font-family: 'PT Serif', serif;
+
+        }
+        #dataContainer {
+            overflow-y: auto;
+            height: 100vh;
+            background-color: #fff;
+            font-family: 'PT Serif', serif;
+
+        }
+        #plotResult img {
+            max-width: 100%;
+            height: auto;
+        }
+        table {
+            width: 100%;
+            border:none;
+            text-align: left;
+            font-family: 'Didact Gothic', sans-serif;
+        }
+        thead {
+            background-color: #36016fea; 
+            border:none;
+            color:white;
+        }
+        tbody tr {
+            background-color: white; 
+            color:black;
+            font-weight:bold;
+        }
+        
+        
+        th, td {
+            padding: 8px;
+            width: fit-content;
+        }
+        .container-fluid {
+            padding-right: 0;
+            padding-left: 0;
+            height: 100vh;
+        }
+        h1, h2 {
+            font-weight: bold;
+        }
+        .fadeIn {
+            animation: fadeInAnimation ease 5s;
+            animation-iteration-count: 1;
+            animation-fill-mode: forwards;
+        }
+        @keyframes fadeInAnimation {
+            0% {
+                opacity: 0;
+            }
+            100% {
+                opacity: 1;
+            }
+        }   
+      
+        input{
+            border:none;
+        }
+        
+        input:focus {
+            border-color: #ced4da; 
+            box-shadow: none; 
+            outline: none;
+    }
+
+.form-control {
+    flex: 1; 
+    margin-right: 10px; 
+}
+.home-link {
+            position: absolute;
+            top: 10px; 
+            left: 10px; 
+            font-weight: bolder;
+            font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+            color: white; 
+            text-decoration: none; 
+            z-index: 1000; 
+        }
+a:hover {
+    text-decoration: none;
+    color: rgb(198, 191, 191);
+    
+}
+    </style>
+</head>
+<body>
+    <div class="container-fluid fadeIn">
+        <div class="row no-gutters">
+            <div class="col">
+                <a href="/" class="home-link">DDJJR.</a>
+            </div>
+            <div class="col-md-6" id="plotContainer">
+                <h1>Toxic Movies Data Visualization</h1>
+
+                <form id="movieForm" class="mb-4">
+                    <label for="n" class="mr-2">Number of Top Toxic Movies:</label>
+                    <input type="number" id="n" name="n" min="1" max="20" value="5" class="mr-3">
+                    <button type="submit" class="btn btn-light">Generate Toxic Movie Plot</button>
+                </form>
+                <div id="plotResult" class="w-100"></div>
+            </div>
+            <div class="col-md-6" id="dataContainer">
+                <table id="dataTable" class="table">
+                    <thead>
+                        <tr>
+                            <th style="background-color: #a163a25a;">Movie</th>
+                            <th style="background-color: rgba(10, 228, 177, 0.438);">Sentiment Analysis: Normal</th>
+                            <th style="background-color: rgba(255, 0, 0, 0.331);">Sentiment Analysis: Toxic</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for entry in toxic_movies %}
+                        <tr>
+                            <td>{{ entry['name'] }}</td>
+                            <td>{{ entry['normal'] }}</td>
+                            <td>{{ entry['flag'] }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+                        
+                   
+    <!-- Include jQuery for handling form submission -->
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script>
+
+        $(document).ready(function() {
+            $('#plotResult').html('<img src="' + '/static/img/top_5_movies_toxic.png' + '" />');
+
+            $('#movieForm').on('submit', function(e) {
+                e.preventDefault(); 
+                $.ajax({
+                    url: '/generate_movies_toxic_plot',
+                    type: 'POST',
+                    data: { n: $('#n').val() },
+                    success: function(response) {
+                        $('#plotResult').html('<img src="' + response.plot_url + '" />');
+                    },
+                    error: function() {
+                        $('#plotResult').html('Error generating toxic Movies plot');
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>

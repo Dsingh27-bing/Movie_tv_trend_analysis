@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome Page</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/5.1.3/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.1.3/js/bootstrap.bundle.min.js"></script>
+
+</head>
+<body>
+    
+    <div class="full-height split">
+        <div class="left-side">
+            <div class="left-text">Toxicity in TV and Movies in the last decade.</div>
+        </div>
+        <div id="redOverlay" class="red-overlay"></div>
+        <div class="right-side">
+            <h2 class="explore-heading">Explore the Data</h2>
+            <ul class="explore-list">
+                <li><a href="/tmdb_tv">Trending TV Series Across TMDB</a></li>
+                <li><a href="/tmdb_movies">Trending Movies Across TMDB</a></li>
+                <li><a href="/tv_list">Trending TV Series Across Reddit</a></li>
+                <li><a href="/movies_list">Trending Movies Across Reddit</a></li>
+                <li><a href="/tv_toxic_list">Toxicity in TV Series</a></li>
+                <li><a href="/movies_toxic_list">Toxicity in Movies</a></li>
+                <li><a href="/genre_tv">Toxicity Across Genre TV Data</a></li>
+                <li><a href="/genre_movies">Toxicity Across Genre Movie Data</a></li>
+            </ul>
+        </div>
+
+        <div class="circle" onmouseover="showTooltip()" onmouseout="hideTooltip()" id="circle">
+            <div class="tooltip" id="tooltip"> 🤍 Debbie, Jay, Ritika, Dimple, Jeremy </div>
+        </div>
+        </div>
+        
+        <script>
+        const circle = document.getElementById("circle");
+        const tooltip = circle.querySelector(".tooltip");
+
+        // Function to show the tooltip
+        circle.onmouseover = function() {
+            tooltip.style.display = "block";
+        }
+
+        // Function to hide the tooltip
+        circle.onmouseout = function() {
+            tooltip.style.display = "none";
+        }
+
+            function showRedOverlayAndDelayNavigation(link) {
+                const redOverlay = document.getElementById("redOverlay");
+                redOverlay.style.display = "block";
+
+                setTimeout(() => {
+                    // Navigate to the clicked link after 2 seconds
+                    window.location.href = link.href;
+                    
+
+                }, 700); 
+            }
+
+            const links = document.querySelectorAll(".explore-list a");
+            links.forEach(link => {
+                link.addEventListener("click", function(e) {
+                    e.preventDefault(); 
+                    showRedOverlayAndDelayNavigation(this);
+                });
+            });
+        </script>
+        
+        <style>
+        
+
+            .explore-heading {
+                color: #e62727;
+                font-size: 24px;
+                margin-bottom: 10px;
+            }
+            .red-overlay {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 0%;
+                height: 100%;
+                background-color: #87120c;
+                z-index: 9999;
+                display: none;
+                animation: fadeInWidth 0.3s ease-in forwards;
+            }
+            @keyframes fadeInWidth {
+                from {
+                    width: 0; 
+                }
+                to {
+                    width: 100%; 
+                }
+            }
+            .explore-list {
+                list-style: none;
+                padding: 0;
+                margin: 0;
+            }
+            .explore-list li {
+                margin-bottom: 10px;
+            }
+            .explore-list a {
+                text-decoration: none;
+                color: #333;
+                font-weight: bold;
+                font-size: 18px;
+                transition: color 0.3s ease-in-out;
+            }
+            .explore-list a:hover {
+                color: #2f4ced;
+            }
+        </style>
+        
+</body>
+</html>
